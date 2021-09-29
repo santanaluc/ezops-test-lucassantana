@@ -22,7 +22,7 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD    
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag lucsilv/ezops-test:$(date +%s)
+      run: docker build . --file Dockerfile --tag lucsilv/ezops-test:latest
     
     - name: Docker Push
       run: docker push lucsilv/ezops-test:latest
