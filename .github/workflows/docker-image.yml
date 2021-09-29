@@ -25,4 +25,4 @@ jobs:
       run: docker build . --file Dockerfile --tag ezops-test:$(date +%s)
     
     - name: Docker Push
-      run: docker push ${{secrets.DOCKER_USER}}/ezops-test:latest
+      run: docker push lucsilv/ezops-test:latest
