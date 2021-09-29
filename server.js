@@ -14,7 +14,7 @@ var Message = mongoose.model('Message', {
     message: String
 })
 
-var dbUrl = ${{DB_CONNECTION}} 
+var dbUrl = ${{secret.DB_CONNECTION}} 
     
 app.get('/messages', (req, res) => {
     Message.find({}, (err, messages) => {
