@@ -33,8 +33,7 @@
     </div>
     <script>
         // Pegar url dinâmicamente
-        var os = require("os");
-        var hostname = os.hostname();
+        var hostname = location.hostname();
 
         var socket = io();
         $(() => {
