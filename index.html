@@ -33,7 +33,7 @@
     </div>
     <script>
         // Pegar url dinâmicamente
-        var hostname = location.hostname();
+        var hostname = $(location).attr('hostname');
 
         var socket = io();
         $(() => {
@@ -51,13 +51,13 @@
         }
 
         function getMessages() {
-            $.get(`$(hostname)/messages`, (data) => {
+            $.get("http://" + $(location).attr('host') + "/messages", (data) => {
                 data.forEach(addMessages);
             })
         }
 
         function sendMessage(message) {
-            $.post(`$(hostname)/messages`, message)
+            $.post("http://" + $(location).attr('host') + '/messages', message)
         }
     </script>
 </body>
