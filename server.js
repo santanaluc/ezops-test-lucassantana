@@ -14,7 +14,7 @@ var Message = mongoose.model('Message', {
     message: String
 })
 
-var dbUrl = 'mongodb+srv://client:Cp7ghBGKCumqP631@simple-chat.zxoln.mongodb.net/simple-chat?retryWrites=true&w=majority'
+var dbUrl = 'mongodb+srv://client:Cp7ghBGKCumqP631@simple-chat.zxoln.mongodb.net/simple-?retryWrites=true&w=majority'
     
 app.get('/messages', (req, res) => {
     Message.find({}, (err, messages) => {
@@ -38,12 +38,23 @@ app.post('/messages', (req, res) => {
     })
 })
 
+app.delete('/messages/:messageId', (req, res) => {
+    let obj = {_id: req.params.messageId};
+    var message = new Message(obj);
+    message.delete((err) => {
+        if (err)
+            sendStatus(500);
+        io.emit('deletion', obj._id);
+        res.sendStatus(200);
+    })
+})
+
 io.on('connection', () => {
-    console.log('An user is connected')
+    console.log('a user is connected')
 })
 
 mongoose.connect(dbUrl);
 
 var server = http.listen(8080, () => {
-    console.log('Server is running on port', server.address().port);
+    console.log('server is running on port', server.address().port);
 });

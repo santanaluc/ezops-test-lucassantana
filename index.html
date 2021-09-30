@@ -25,7 +25,7 @@
             <br>
             <textarea id="message" class="form-control" placeholder="Your Message Here"></textarea>
             <br>
-            <button id="send" class="btn btn-success">Send</button>
+            <button id="send" class="btn btn-success" style="float:right">Send</button>
         </div>
         <div id="messages">
 
@@ -33,7 +33,7 @@
     </div>
     <script>
         // Pegar url dinâmicamente
-        var hostname = $(location).attr('hostname');
+        var getUrl = "http://" + $(location).attr('host')
 
         var socket = io();
         $(() => {
@@ -47,17 +47,38 @@
         socket.on('message', addMessages)
 
         function addMessages(message) {
-            $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
+            $("#messages").append(`<div id="container_${message._id}">
+                <h4 style="float: left">${message.name}</h4>
+                <button id="${message._id}" class="btn btn-danger" style="float: right" onclick="deleteMessage(this.id)">Excluir</button>
+                <p style="clear:both"> ${message.message} </p>
+                </div>`
+            )
         }
 
         function getMessages() {
-            $.get("http://" + $(location).attr('host') + "/messages", (data) => {
+            $.get(getUrl + "/messages", (data) => {
                 data.forEach(addMessages);
             })
         }
 
         function sendMessage(message) {
-            $.post("http://" + $(location).attr('host') + '/messages', message)
+            $.post(getUrl + '/messages', message)
+        }
+
+        function deleteMessage(messageId) {
+            if (confirm(`Teste ${messageId}?`)) {
+                $.ajax({
+                    url: getUrl +  `/messages/ + ${messageId}`,
+                    type: 'DELETE',
+                    success: function(result) {
+                        removeFromList(messageId);
+                    }
+                })
+            }
+        }
+
+        function removeFromList(messageId) {
+            $(`#container_${messageId}`).remove();
         }
     </script>
 </body>
