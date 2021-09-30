@@ -32,6 +32,10 @@
         </div>
     </div>
     <script>
+        // Pegar url dinâmicamente
+        var os = require("os");
+        var hostname = os.hostname();
+
         var socket = io();
         $(() => {
             $("#send").click(() => {
@@ -48,13 +52,13 @@
         }
 
         function getMessages() {
-            $.get('http://localhost:8080/messages', (data) => {
+            $.get(`$(hostname)/messages`, (data) => {
                 data.forEach(addMessages);
             })
         }
 
         function sendMessage(message) {
-            $.post('http://localhost:8080/messages', message)
+            $.post(`$(hostname)/messages`, message)
         }
     </script>
 </body>

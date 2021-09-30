@@ -39,11 +39,11 @@ app.post('/messages', (req, res) => {
 })
 
 io.on('connection', () => {
-    console.log('a user is connected')
+    console.log('An user is connected')
 })
 
 mongoose.connect(dbUrl);
 
 var server = http.listen(8080, () => {
-    console.log('server is running on port', server.address().port);
+    console.log('Server is running on port', server.address().port);
 });
