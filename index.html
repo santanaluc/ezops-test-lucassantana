@@ -66,9 +66,9 @@
         }
 
         function deleteMessage(messageId) {
-            if (confirm(`Teste ${messageId}?`)) {
+            if (confirm(`Tem certeza que deseja excluir a mensagem??`)) {
                 $.ajax({
-                    url: getUrl +  `/messages/ + ${messageId}`,
+                    url: getUrl +  `/messages/${messageId}`,
                     type: 'DELETE',
                     success: function(result) {
                         removeFromList(messageId);

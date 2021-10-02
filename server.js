@@ -43,13 +43,15 @@ app.post('/messages', (req, res) => {
 })
 
 app.delete('/messages/:messageId', (req, res) => {
-    let obj = {_id: req.params.messageId};
+    var obj = {_id: req.params.messageId};
     var message = new Message(obj);
     message.delete((err) => {
-        if (err)
-            sendStatus(500);
-        io.emit('deletion', obj._id);
-        res.sendStatus(200);
+        if (err){
+            res.sendStatus(500);
+        } else {
+            io.emit('deletion', obj._id);
+            res.sendStatus(200);
+        }
     })
 });
 
@@ -62,5 +64,5 @@ io.on('connection', () => {
 mongoose.connect(dbUrl);
 
 var server = http.listen(8080, () => {
-    console.log('server is running on port', server.address().port);
+    console.log('Server is running on port', server.address().port);
 });
