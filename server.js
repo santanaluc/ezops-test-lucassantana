@@ -5,10 +5,6 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongoose = require('mongoose');
 
-app.use(express.static(__dirname));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }))
-
 var Message = mongoose.model('Message', {
     name: String,
     message: String
@@ -16,6 +12,14 @@ var Message = mongoose.model('Message', {
 
 var dbUrl = 'mongodb+srv://client:Cp7ghBGKCumqP631@simple-chat.zxoln.mongodb.net/simple-?retryWrites=true&w=majority'
     
+mongoose.connect(dbUrl, (err) => {
+    console.log('mongodb connected', err);
+});
+
+app.use(express.static(__dirname));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
+
 app.get('/messages', (req, res) => {
     Message.find({}, (err, messages) => {
         res.send(messages);
@@ -47,10 +51,12 @@ app.delete('/messages/:messageId', (req, res) => {
         io.emit('deletion', obj._id);
         res.sendStatus(200);
     })
-})
+});
+
+//io = io.listen(server);
 
 io.on('connection', () => {
-    console.log('a user is connected')
+    console.log('An user is connected')
 })
 
 mongoose.connect(dbUrl);
