@@ -38,6 +38,19 @@ app.post('/messages', (req, res) => {
     })
 })
 
+app.delete('/messages/:messageId', (req, res) => {
+    var obj = {_id: req.params.messageId};
+    var message = new Message(obj);
+    message.delete((err) => {
+        if (err){
+            res.sendStatus(500);
+        } else {
+            io.emit('deletion', obj._id);
+            res.sendStatus(200);
+        }
+    })
+});
+
 io.on('connection', () => {
     console.log('An user is connected')
 })
