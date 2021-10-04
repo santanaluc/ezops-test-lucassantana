@@ -51,6 +51,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
            cd home/ezops-test-lucassantana
-           sudo docker rm -f lucsilv/ezops-test
+           sudo chmod 666 /var/run/docker.sock
+           sudo docker stop ezops-test
+           docker system prune --all --force --volumes
            sudo docker pull lucsilv/ezops-test:latest
            sudo docker run -d --name=ezops-test -p 80:8080 --restart=always lucsilv/ezops-test:latest
